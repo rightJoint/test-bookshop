@@ -46,3 +46,8 @@ RUN chown -R www-data:www-data phpMyAdmin-4.9.2-all-languages
 
 COPY 000-default.conf /etc/apache2/sites-enabled/
 RUN /etc/init.d/apache2 restart
+
+
+#### MIDNIGHT COMMANDER #####
+
+RUN apt-get install mc -y
