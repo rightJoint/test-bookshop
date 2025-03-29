@@ -32,8 +32,8 @@ RUN apt-get update && \
 apt-get -y install mariadb-server
 RUN sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/mariadb.conf.d/50-server.cnf
 COPY init.sql .
-COPY rc.local /etc
-RUN chmod +x /etc/rc.local
+#COPY rc.local /etc
+#RUN chmod +x /etc/rc.local
 RUN /etc/init.d/mysql start && mysql -u root < init.sql
 
 
