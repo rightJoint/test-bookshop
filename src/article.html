@@ -179,14 +179,38 @@
             <div class="img-block">
                 <img src="img/img-6.png">
             </div>
-
         </section>
-        <section>
-            <h3>2.3 Настраиваем virtual host</h3>
-            <p>
-                virtual host
-            </p>
-        </section>
+    </section>
+    <section>
+        <h3>2.3 Настраиваем virtual host apache</h3>
+        <p>
+            В репозитории уже была заготовка, 000-default.conf для конфигурации apache и виртуальных хостов,
+            ей я и воспользуюсь. Это ясно, что виртуальных хостов может быть несколько. Поправим 000-default.conf,
+            поменяем настройку DocumentRoot на /var/www/<b>html</b>/bookshop.loc и добавим в него настройку
+        <div class="ex">
+            ServerName bookshop.loc
+        </div>
+        </p>
+        <p>
+            А в Dockerfile закоментим строчку и убрав лишние знаки, это нам уже не нужно.
+        <div class="ex">
+            echo "ServerName localhost" >> /etc/apache2/apache2.conf
+        </div>
+        </p>
+        <p>
+            Скопируем папку проекта, дописав команду в Dockerfile, без нее при старте apache выдаст ошибку.
+        <div class="ex">
+            COPY /src /var/www/html/bookshop.loc
+        </div>
+        </p>
+        <p>
+            Снова собираем сборку и запускаем контейнер, из контейнера в ручном режиме запускаем mysql и apache,
+            проверяем доступность в браузере по адресу http://bookshop.loc:8080/phpmyadmin/ Отлично, все работает,
+            значит осталась последняя часть задания.
+        </p>
+        <div class="img-block">
+            <img src="img/img-7.png">
+        </div>
     </section>
 </div>
 </body>

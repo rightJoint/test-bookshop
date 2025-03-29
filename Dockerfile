@@ -9,8 +9,8 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
 apt-get install -y apache2  && \
-rm -rf /var/lib/apt/lists/* && \
-echo "ServerName localhost" >> /etc/apache2/apache2.conf
+rm -rf /var/lib/apt/lists/*
+#echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 EXPOSE 80
 
@@ -63,3 +63,7 @@ RUN echo "root:password" | chpasswd
 RUN echo "admin:trust" | chpasswd
 RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 CMD ["/usr/sbin/sshd", "-D"]
+
+#### COPY PROJECT FILES #####
+
+COPY /src /var/www/html/bookshop.loc
