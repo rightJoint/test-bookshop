@@ -51,3 +51,15 @@ RUN /etc/init.d/apache2 restart
 #### MIDNIGHT COMMANDER #####
 
 RUN apt-get install mc -y
+
+
+#### OPENSSH-SERVER #####
+
+RUN useradd -ms /bin/bash admin
+
+RUN apt-get update && apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN echo "root:password" | chpasswd
+RUN echo "admin:trust" | chpasswd
+RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+CMD ["/usr/sbin/sshd", "-D"]

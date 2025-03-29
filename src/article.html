@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Типовое тестовое задание php</title>
+</head>
+<style>
+    body{
+        text-align: center
+    }
+    .art-container{
+        max-width: 960px;
+        display: inline-block;
+        font-size: 22px;
+    }
+    p{
+        text-align: left;
+    }
+    .note{
+        border-left: 5px solid darkorange;
+        border-bottom: 1px solid lightgray;
+        border-top: 1px solid lightgray;
+        border-right: 1px solid lightgray;
+        width: 100%;
+        text-align: left;
+    }
+    ol{
+        text-align: left;
+    }
+    .ex{
+        width: 100%;
+        background-color: black;
+        color: darkorange;
+        text-align: left;
+    }
+</style>
+<body>
+<div class="art-container">
+    <h1>Решение по шагам. Стек: docker, php, apache, mysql, openssh</h1>
+    <section>
+        <h2>1. Анализ постановки</h2>
+        <p>
+            Задание мне было выдано в виде ms-word <a href="bookshop.txt" title="скачать задание">документа</a> и при
+            беглом просмотре показалось довольно обычным, 100% что оно не может нести коммерчекую выгоду тому кто его выдал и
+            не очень большое по объему. Попробуем вникнуть в детали, что именно требуется.
+        </p>
+        <div class="note">
+            Прежде чем бросаться выполнять задание, лучше предварительно уточнить все расплывчатые формулировки.
+            Так вы поймёте что задание вам было выдано не для того чтоб вы отъеб..ались и
+            возможное его решение действительно поможет вам пройти на следующй этап.
+        </div>
+        <p>
+            В моем случае обратная связь по вопросам поддреживалась через hr, которая обычно отвечала в течении дня.
+            В данном задании было непонятно что следует понимать под суммой, а что под количеством книг (строка 17),
+            так же непонятно было что такое mc чтоб включить его в образ (строка 8).
+        </p>
+        <p>
+            На уточняющие вопросы я получил следующие ответы:
+        <ol>
+            <li>сумму книг выводить не надо, только к-во</li>
+            <li>внутри категории не может быть другой категории</li>
+            <li>mc - это midnight commander</li>
+        </ol>
+        </p>
+        <p>
+            Ну что же имеем: задание проанализировано, обратная связь установлена, каких-то подвохов не замечено.
+            Попробуем выполнить задание.
+        </p>
+    </section>
+    <section>
+        <h2>2. Сборка образа в docker-контейнере</h2>
+        <p>
+            Мне не часто приходилось выполнять сборки на Ubuntu, в пояснениях было указано что за основу
+            можно взять образ mrxder/docker-apache-php7.2-mysql-phpmyadmin. Так и сделаем.
+        </p>
+        <p>
+            Клонируем репозиторий. Пока Dockerfile оставим без изменений, просто проверим как все работает.
+            Попробуем собрать образ в docker, выполним следующие команды из каталога с Dockerfile.
+            (bookshop-test-1 - имя image, bookshop-c-test-1 - имя контейнера)
+        <div class="ex">
+            docker build . -t bookshop-test-1<br>
+            docker run -d -p 8080:80 -p 3306:3306 --name bookshop-c-test-1 bookshop-test-1
+        </div>
+        </p>
+        <p>
+            По идее, после этих действий мы должны увидеть страницу входа в phpMyAdmin по адресу localhost:8080/phpmyadmin,
+            но что-то пошло не так, попробуем разобраться.
+        </p>
+        <div class="img-block">
+            <img src="img/img-1.png">
+        </div>
+        <p>
+            Обратим внимание что контейнер не запущен. Посмотрим логи, они ведут к файлу rc.local, посмотрим что в нем написано:
+            этот файл стартует mysql и apache2.
+        </p>
+        <div class="img-block">
+            <img src="img/img-2.png">
+        </div>
+        <p>
+            Пока закомментим эти строки в Dockerfile и проверим что выйдет. Снова соберем имадже и запустим контейнер.
+            В этот раз он остался запущенным, но phpmyadmin по прежнему недоступно. Попробуем запустить mysql и apache2 вручную.
+        <div class="ex">
+            /etc/init.d/mysql start<br>
+            /etc/init.d/apache2 start
+        </div>
+        </p>
+        <div class="img-block">
+            <img src="img/img-3.png">
+        </div>
+        <p>
+            При ручном запуске серверов страница localhost:8080/phpmyadmin открывается браузером, можно зайти в phpmyadmin с
+            теми логин и пароль что даны в описании к репозиторию. Пока оставим решение проблемы с автостартом серверов на потом.
+            Продолжим выполнение задания...но помним что пока сервер после остановки контейнера придется запускать вручную.
+            Для п.2.1 и 2.2 web все равно пока не потребуется.
+        </p>
+        <section>
+            <h3>2.1 Устанавливаем midnight commander</h3>
+            <p>
+                Чисто для теста я сначала устанавливал его в запущенном контейнере из командной строки, проверил,
+                а после добавил ту же команду в Dockerfile, снова собрал image и запустил контейнер.
+            <div class="ex">
+                apt-get install mc -y
+            </div>
+            </p>
+            <div class="img-block">
+                <img src="img/img-4.png" style="max-width: 70%">
+            </div>
+            <p>
+                Отлично, с этим проблем не возникло, так что двигаемся дальше...
+            </p>
+        </section>
+        <section>
+            <h3>2.2 Устанавливаем openssh - сервер</h3>
+            <p>
+                Немного погуглив я нашел рабочий пример по
+                <a href="https://www.warp.dev/terminus/ssh-docker-container" title="Writing a Dockerfile for an SSH
+                server with password-based authentication">ссылке</a>. Это как раз то, что надо. Добавляем те пять
+                строчек из примера в Dockerfile. Но вот просто поменять логин и пароль мы не можем. Для это нам надо
+                сначала создать нового пользователя в системе добавив еще одну строку в Dockerfile.
+            <div class="ex">
+                RUN useradd -ms /bin/bash newuser
+            </div>
+            </p>
+            <p>
+                Снова пересобираем имадже, проверяем, незабыв добавить 2222-й порт в команду при запуске контейнера.
+            <div class="ex">
+                docker build . -t bookshop-test-1<br>
+                docker run -d -p 8080:80 -p 3306:3306 -p 2222:22 --name bookshop-c-test-1 bookshop-test-1
+            </div>
+            </p>
+            <div class="img-block">
+                <img src="img/img-5.png">
+            </div>
+            <p>
+                Пытаемся подключиться с помощью putty с логин admin и пароль trust. Збс, работает!
+            </p>
+            <p>
+                Вспоминаем что в задании написано, хост должен быть доступен по адресу bookshop.loc Так как я использую
+                linux docker engine, настроим хост на windows.
+            </p>
+            <p>
+                Для этого откроем файл
+            <div class="ex">
+                C:\Windows\System32\drivers\etc\hosts
+            </div>
+            </p>
+            <p>
+                Добавим в него строчку
+            <div class="ex">
+                127.0.0.1 bookshop.loc
+            </div>
+            </p>
+            <p>
+                Запустим контейнер, указав при этом название хоста, проверим доступность по ssh. Получилось!
+            <div class="ex">
+                docker run -d -p 8080:80 -p 3306:3306 -p 2222:22 -h bookshop.loc --name bookshop-c-test-1 bookshop-test-1
+            </div>
+            </p>
+            <div class="img-block">
+                <img src="img/img-6.png">
+            </div>
+
+        </section>
+        <section>
+            <h3>2.3 Настраиваем virtual host</h3>
+            <p>
+                virtual host
+            </p>
+        </section>
+    </section>
+</div>
+</body>
+</html>
