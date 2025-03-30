@@ -135,7 +135,7 @@
                 Немного погуглив я нашел рабочий пример по
                 <a href="https://www.warp.dev/terminus/ssh-docker-container" title="Writing a Dockerfile for an SSH
                 server with password-based authentication">ссылке</a>. Это как раз то, что надо. Добавляем те пять
-                строчек из примера в Dockerfile. Но вот просто поменять логин и пароль мы не можем. Для этого нам надо
+                строчек из примера в Dockerfile. Но вот просто поменять логин и пароль мы не можем. Нам надо
                 сначала создать нового пользователя в системе добавив еще одну строку в Dockerfile.
             <div class="ex">
                 RUN useradd -ms /bin/bash newuser
@@ -273,8 +273,8 @@
         <p>
             Вручную в контейнере запускаем mysql и apache
         <div class="ex">
-        /etc/init.d/mysql start<br>
-        /etc/init.d/apache2 start
+            /etc/init.d/mysql start<br>
+            /etc/init.d/apache2 start
         </div>
         </p>
         <p>
@@ -285,6 +285,40 @@
         </p>
         <p>
             Похоже, на этом задание выполнено.
+        </p>
+    </section>
+    <section>
+        <h2>4. Дополнительные шаги</h2>
+        <p>
+            Подумаем, что еще хорошо было бы сделать в этом тестовом проекте чтоб он был немного лучше...
+        </p>
+        <h3>4.1 Подключаем второй репозиторий к проекту</h3>
+        <p>
+            Я создал на своем аккаунте голый репозиторий https://github.com/rightJoint/test-bookshop в который
+            буду отправлять изменения. Может мне придется публиковать эту статью, но давать в ней ссылку на архив как-то
+            не очень, куда лучше ссылку на репозиторий. Подключим репозиторий и сделаем push.
+        <div class="ex">
+            git remote add test-bookshop https://github.com/rightJoint/test-bookshop<br>
+            git push test-bookshop bookshop
+        </div>
+        </p>
+        <p>
+            Кроме ноута у меня есть ещё micro-pc, подключенный к по hdmi к телеку. На нем и проверим.
+        <div class="img-block">
+            <img src="img/img-9.png" style="max-width: 70%">
+        </div>
+        </p>
+        <h3>4.2 Рефакторинг Dockerfile</h3>
+        <p>
+            Можно удалить лишние команды из Dokerfile и лишние файлы из проекта, которые для него сейчас уже не нужны.
+        </p>
+        <h3>4.3 Решить проблему с автозапуском</h3>
+        <p>
+            Конечно меня напрягает запускать сервера вручную. Пока я не нашел способа сделать это, гугл выводил меня на
+            следующие ресурсы по этому запросу
+            <a href="https://forums.docker.com/t/apache2-not-start-in-docker-container/89363/2">forums.docker.com</a> и
+            <a href="https://stackoverflow.com/questions/49764989/cannot-start-apache-automatically-with-docker">stackoverflow.com</a>,
+            но предложенные там решения мне не помогли.
         </p>
     </section>
 </div>
