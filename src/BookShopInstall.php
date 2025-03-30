@@ -77,7 +77,7 @@ ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
     private static function addCategories():string
     {
         return "REPLACE INTO `categories` (`category_id`, `categoryName`) VALUES ('F42F81F8-1300-41CA-89BB-36BD7417BE1E', 'fiction');".
-            "REPLACE INTO `categories` (`category_id`, `categoryName`) VALUES ('3D56453C-C00E-4241-A2AE-9A6A1993E6A6', 'since');".
+            "REPLACE INTO `categories` (`category_id`, `categoryName`) VALUES ('3D56453C-C00E-4241-A2AE-9A6A1993E6A6', 'science');".
             "REPLACE INTO `categories` (`category_id`, `categoryName`) VALUES ('6C20AC2A-7817-4440-A67D-5A3D40471275', 'bio');";
     }
     private static function addBooks():string
@@ -99,9 +99,9 @@ ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
             "REPLACE INTO `books` (`book_id`, `bookName`, `price`, `status`, `bookCategory_id`) ".
             "VALUES ('1401D2E3-DC59-4166-B9C7-A67DA4136992', 'Краткая история времени', 630, 'Withdrawn from sale', '3D56453C-C00E-4241-A2AE-9A6A1993E6A6');".
             "REPLACE INTO `books` (`book_id`, `bookName`, `price`, `status`, `bookCategory_id`) ".
-            "VALUES ('6AFAAAC6-75AC-4A2B-8AC8-D13770266185', 'test-since-book', 777, 'In stock', '3D56453C-C00E-4241-A2AE-9A6A1993E6A6');".
+            "VALUES ('6AFAAAC6-75AC-4A2B-8AC8-D13770266185', 'test-science-book', 777, 'In stock', '3D56453C-C00E-4241-A2AE-9A6A1993E6A6');".
             "REPLACE INTO `books` (`book_id`, `bookName`, `price`, `status`, `bookCategory_id`) ".
-            "VALUES ('FB1FBFF1-685E-4276-8B8F-C0CA7C1DECD6', 'test-book-since-2', 333, 'In stock', '3D56453C-C00E-4241-A2AE-9A6A1993E6A6');";
+            "VALUES ('FB1FBFF1-685E-4276-8B8F-C0CA7C1DECD6', 'test-book-science-2', 333, 'In stock', '3D56453C-C00E-4241-A2AE-9A6A1993E6A6');";
     }
 
     private static function addAuthors():string
