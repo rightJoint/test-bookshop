@@ -1,3 +1,8 @@
+Это тестовое задание на php-разработчика по стеку: docker, php-7.2, mySlq, openssh-сервер. 
+Описание тестового задания в /src/bookshop.txt 
+Решение задания по шагам в /src/article.html
+=======================================================================================================================
+
 # Apache2 with php7.2 and mariadb with phpmyadmin on Ubuntu 18.04 LTS for Development 
 This is a docker image meant for modern php and mysql(mariadb) development. Don't use this image in production.
 
